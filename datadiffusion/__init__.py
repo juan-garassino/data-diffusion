@@ -1,3 +1,5 @@
-"""datadiffusion — Tabular diffusion models for synthetic data generation."""
+"""datadiffusion — tabular synthetic data with denoising diffusion, evaluated against baselines."""
 
-__version__ = "3.0.0"
+from __future__ import annotations
+
+__version__ = "3.0.0.dev0"

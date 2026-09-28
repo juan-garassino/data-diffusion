@@ -112,8 +112,14 @@ Dataset dispatcher. Currently supports `"california"`.
 **Feature names** (in order):
 ```python
 CALIFORNIA_FEATURE_NAMES = [
-    "MedInc", "HouseAge", "AveRooms", "AveBedrms",
-    "Population", "AveOccup", "Latitude", "Longitude",
+    "MedInc",
+    "HouseAge",
+    "AveRooms",
+    "AveBedrms",
+    "Population",
+    "AveOccup",
+    "Latitude",
+    "Longitude",
 ]
 ```
 
@@ -189,9 +195,9 @@ x_t = scheduler.add_noise(x_start, noise, timesteps)
 x_prev = scheduler.step(model_output, timestep, x_t)
 
 # Precomputed tensors
-scheduler.alphas_cumprod      # (T,)
-scheduler.betas               # (T,)
-len(scheduler)                # T
+scheduler.alphas_cumprod  # (T,)
+scheduler.betas  # (T,)
+len(scheduler)  # T
 ```
 
 ### `datadiffusion.schedulers.ScoreBasedNoiseScheduler`
@@ -223,15 +229,15 @@ After training, the model holds the best EMA weights.
 
 ```python
 ema = EMA(model, decay=0.999)
-ema.update(model)      # Update shadow weights
-ema.apply(model)       # Copy EMA weights into model
-ema.restore(model)     # Restore original weights
+ema.update(model)  # Update shadow weights
+ema.apply(model)  # Copy EMA weights into model
+ema.restore(model)  # Restore original weights
 ```
 
 ### `datadiffusion.training.losses`
 
 ```python
-loss = noise_prediction_loss(predicted, noise)          # MSE
+loss = noise_prediction_loss(predicted, noise)  # MSE
 loss = score_matching_loss(predicted, noise, sqrt_1m_alpha, timesteps)  # Weighted MSE
 loss_fn = get_loss_fn("mlp")  # Returns noise_prediction_loss
 ```
@@ -248,7 +254,8 @@ samples = generate_samples(model, scheduler, num_samples=1000, input_size=8)
 
 # DDIM (deterministic, fewer steps)
 samples = generate_samples_ddim(
-    model, scheduler,
+    model,
+    scheduler,
     num_samples=1000,
     input_size=8,
     num_inference_steps=50,
@@ -267,11 +274,11 @@ Both return `np.ndarray` of shape `(num_samples, input_size)` in scaled space. U
 ```python
 quality = compute_quality_metrics(real_X, synthetic_X, real_y, feature_names)
 
-quality.composite_score     # float, 0-1
-quality.avg_ks_statistic    # float, lower is better
-quality.corr_diff_norm      # float, lower is better
-quality.ml_utility_ratio    # float, higher is better
-quality.feature_reports     # List[FeatureReport]
+quality.composite_score  # float, 0-1
+quality.avg_ks_statistic  # float, lower is better
+quality.corr_diff_norm  # float, lower is better
+quality.ml_utility_ratio  # float, higher is better
+quality.feature_reports  # List[FeatureReport]
 ```
 
 ### `datadiffusion.evaluation.reports`
@@ -292,8 +299,8 @@ loop = SelfImprovementLoop(config)
 result = loop.run()
 
 result.quality.composite_score  # Best iteration's score
-result.best_iteration           # Index of best iteration
-result.iterations               # List[IterationResult]
+result.best_iteration  # Index of best iteration
+result.iterations  # List[IterationResult]
 ```
 
 Orchestrates the full train → generate → evaluate → adjust cycle. Each iteration produces artifacts (plots, reports, checkpoints) and logs to MLflow.
