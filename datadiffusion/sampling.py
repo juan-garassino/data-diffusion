@@ -20,14 +20,18 @@ def sample(
     method: str = "ddim",
     steps: int = 50,
     eta: float = 0.0,
-    clip: float | None = None,
+    clip: float | None = 5.0,
     seed: int = 0,
     batch_size: int = 8192,
 ) -> torch.Tensor:
     """Draw n rows in the model's (normalized) space.
 
     method="ddpm" runs all T ancestral steps; method="ddim" runs `steps` steps, deterministic
-    for eta=0 and equivalent to DDPM's variance for eta=1. `clip` bounds the predicted x0.
+    for eta=0 and equivalent to DDPM's variance for eta=1.
+
+    `clip` bounds the predicted x0 (default 5: the preprocessor maps data to a standard normal
+    that QuantileTransformer caps at about +/-5.2). Without it, early steps divide the noise
+    prediction by sqrt(abar_t) ~ 1e-3 under the cosine schedule and samples explode.
     """
     if method not in ("ddpm", "ddim"):
         raise ValueError(f"unknown sampler {method!r}; use 'ddpm' or 'ddim'")
