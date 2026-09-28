@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: uv python install 3.12
+      - name: Lockfile has CPU-only torch
+        run: "! grep -q nvidia uv.lock"
+      - run: uv sync --extra dev
+      - run: uv run ruff check .
+      - run: make test-ci  # California tests skip when the sklearn cache is absent
+
+  smoke-import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: uv python install 3.12
+      - run: uv sync
+      - name: Smoke import — every public module loads cleanly
+        run: |
+          uv run python -c "
+          import datadiffusion, datadiffusion.cli, datadiffusion.config, datadiffusion.data
+          import datadiffusion.evaluate, datadiffusion.model, datadiffusion.runs
+          import datadiffusion.sampling, datadiffusion.schedule, datadiffusion.train
+          print('OK')
+          "

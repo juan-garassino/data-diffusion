@@ -1,65 +1,34 @@
-.PHONY: install test train evaluate improve clean lint mlflow help
+.PHONY: help install test test-ci lint train-moons train-california evaluate baselines clean
 
-# --- Setup ---
-install:                          ## Install all dependencies
-	pip install -r requirements.txt
+RUN ?=
 
-# --- Core pipeline ---
-train:                            ## Train diffusion model (single run)
-	python main.py --dataset california --num_epochs 100
+help: ## Show this help
+	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z_-]+:.*##/ {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-train-quick:                      ## Quick training run (10 epochs, for sanity checking)
-	python main.py --dataset california --num_epochs 10
+install: ## Install with dev extras (uv)
+	uv sync --extra dev
 
-evaluate:                         ## Train + generate + evaluate synthetic vs real
-	python main.py --dataset california --num_epochs 50
+test: ## Run the test suite
+	uv run pytest -q
 
-evaluate-report:                  ## Run evaluation and print detailed quality report
-	python main.py --dataset california --num_epochs 50 --verbose
+test-ci: ## Test gate for CI (deselect known failures here, never skip silently)
+	uv run pytest -q -m "not slow"
 
-# --- Self-improvement loop ---
-improve:                          ## Run self-improvement loop (train → eval → adjust → repeat)
-	python main.py --dataset california --self_improve \
-		--max_iterations 10 --quality_threshold 0.8
+lint: ## Ruff lint + format check
+	uv run ruff check . && uv run ruff format --check .
 
-improve-quick:                    ## Quick self-improvement (3 iterations, lower bar)
-	python main.py --dataset california --self_improve \
-		--max_iterations 3 --quality_threshold 0.5 --num_epochs 20
+train-moons: ## Train on the 2-D moons toy set (minutes on CPU)
+	uv run datadiffusion train --config configs/moons.toml
 
-# --- Testing ---
-test:                             ## Run all tests
-	python -m pytest tests/ -v
+train-california: ## Train on California Housing (CPU; long)
+	caffeinate -i uv run datadiffusion train --config configs/california.toml
 
-test-fast:                        ## Run tests excluding slow integration tests
-	python -m pytest tests/ -v -m "not slow"
+evaluate: ## Evaluate a run against baselines: make evaluate RUN=runs/california/<ts>
+	@if [ -z "$(RUN)" ]; then echo "Usage: make evaluate RUN=runs/<name>/<timestamp>"; exit 1; fi
+	uv run datadiffusion evaluate $(RUN) --method ddpm
 
-test-eval:                        ## Run only evaluation tests
-	python -m pytest tests/test_evaluation.py -v
+baselines: ## Score only the baselines on California Housing
+	uv run datadiffusion baselines --dataset california
 
-test-pipeline:                    ## Run only self-improvement pipeline tests
-	python -m pytest tests/test_pipeline.py -v
-
-# --- Experiment tracking ---
-mlflow:                           ## Launch MLflow UI to inspect runs
-	mlflow ui --port 5000
-
-# --- Cleanup ---
-clean:                            ## Remove generated artifacts
-	rm -rf __pycache__ datadiffusion/__pycache__ datadiffusion/**/__pycache__
-	rm -rf logs/*.log
-	rm -rf results/
-	rm -rf .pytest_cache
-
-clean-experiments:                ## Remove all experiment data (destructive!)
-	rm -rf experiments/ mlruns/
-
-# --- Quality ---
-lint:                             ## Type check and lint
-	python -m py_compile main.py
-	python -m pytest tests/ --co -q
-
-help:                             ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
-
-.DEFAULT_GOAL := help
+clean: ## Remove caches
+	rm -rf .pytest_cache .ruff_cache **/__pycache__

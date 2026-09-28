@@ -1,0 +1,22 @@
+# datadiffusion train --config configs/moons.toml   (fast visual sanity check)
+name = "moons"
+
+[data]
+dataset = "moons"
+n_samples = 5000
+
+[model]
+hidden_size = 128
+num_layers = 3
+time_embed_dim = 32
+
+[diffusion]
+num_timesteps = 200
+
+[train]
+epochs = 200
+batch_size = 128
+lr = 2e-3
+warmup_steps = 100
+ema_decay = 0.995
+patience = 40
