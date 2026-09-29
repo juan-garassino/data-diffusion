@@ -100,6 +100,8 @@ where it beats the copula.
 ## Limitations
 
 - Numeric columns only; categorical support is not implemented.
+- Integer-valued columns (population, house age) come out as floats, e.g. a population of 1355.77;
+  round them after sampling if you need integers.
 - The quantile preprocessor maps back through the training quantiles, so synthetic values never
   leave each column's training range.
 - DCR is a heuristic privacy check, not a differential-privacy guarantee.
