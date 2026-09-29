@@ -1,0 +1,35 @@
+{
+  "name": "moons",
+  "data": {
+    "dataset": "moons",
+    "seed": 0,
+    "holdout_fraction": 0.15,
+    "test_fraction": 0.15,
+    "n_samples": 5000,
+    "noise": 0.05
+  },
+  "model": {
+    "hidden_size": 128,
+    "num_layers": 3,
+    "dropout": 0.0,
+    "time_embed_dim": 32
+  },
+  "diffusion": {
+    "num_timesteps": 200,
+    "schedule": "cosine",
+    "beta_start": null,
+    "beta_end": null
+  },
+  "train": {
+    "epochs": 200,
+    "batch_size": 128,
+    "lr": 0.002,
+    "weight_decay": 1e-06,
+    "warmup_steps": 100,
+    "ema_decay": 0.995,
+    "patience": 40,
+    "val_fraction": 0.1,
+    "grad_clip": 1.0,
+    "seed": 0
+  }
+}

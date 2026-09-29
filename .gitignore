@@ -11,5 +11,6 @@ runs/
 logs/
 mlruns/
 experiments/
-results/
+results/*
+!results/*.json
 *.log

@@ -1,0 +1,63 @@
+{
+  "dataset": "moons",
+  "seed": 0,
+  "methods": {
+    "diffusion": {
+      "ks_mean": 0.086,
+      "wasserstein_iqr_mean": 0.0786,
+      "per_column": {
+        "x": {
+          "ks": 0.0733,
+          "wasserstein_iqr": 0.0591
+        },
+        "y": {
+          "ks": 0.0987,
+          "wasserstein_iqr": 0.098
+        }
+      },
+      "correlation_gap": 0.0187,
+      "c2st_auc": 0.6279,
+      "dcr_synthetic": 0.0168,
+      "dcr_holdout": 0.0158,
+      "dcr_ratio": 1.0584
+    },
+    "independent_marginals": {
+      "ks_mean": 0.046,
+      "wasserstein_iqr_mean": 0.0284,
+      "per_column": {
+        "x": {
+          "ks": 0.052,
+          "wasserstein_iqr": 0.0391
+        },
+        "y": {
+          "ks": 0.04,
+          "wasserstein_iqr": 0.0176
+        }
+      },
+      "correlation_gap": 0.5248,
+      "c2st_auc": 0.8617,
+      "dcr_synthetic": 0.1128,
+      "dcr_holdout": 0.0158,
+      "dcr_ratio": 7.1286
+    },
+    "gaussian_copula": {
+      "ks_mean": 0.038,
+      "wasserstein_iqr_mean": 0.0261,
+      "per_column": {
+        "x": {
+          "ks": 0.032,
+          "wasserstein_iqr": 0.0269
+        },
+        "y": {
+          "ks": 0.044,
+          "wasserstein_iqr": 0.0253
+        }
+      },
+      "correlation_gap": 0.1329,
+      "c2st_auc": 0.8292,
+      "dcr_synthetic": 0.0964,
+      "dcr_holdout": 0.0158,
+      "dcr_ratio": 6.0905
+    }
+  }
+}

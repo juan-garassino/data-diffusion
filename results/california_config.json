@@ -1,0 +1,35 @@
+{
+  "name": "california",
+  "data": {
+    "dataset": "california",
+    "seed": 0,
+    "holdout_fraction": 0.15,
+    "test_fraction": 0.15,
+    "n_samples": 5000,
+    "noise": 0.05
+  },
+  "model": {
+    "hidden_size": 256,
+    "num_layers": 4,
+    "dropout": 0.0,
+    "time_embed_dim": 128
+  },
+  "diffusion": {
+    "num_timesteps": 1000,
+    "schedule": "cosine",
+    "beta_start": null,
+    "beta_end": null
+  },
+  "train": {
+    "epochs": 300,
+    "batch_size": 256,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "warmup_steps": 500,
+    "ema_decay": 0.999,
+    "patience": 40,
+    "val_fraction": 0.1,
+    "grad_clip": 1.0,
+    "seed": 0
+  }
+}

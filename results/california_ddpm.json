@@ -1,0 +1,157 @@
+{
+  "dataset": "california",
+  "seed": 0,
+  "methods": {
+    "diffusion": {
+      "ks_mean": 0.0233,
+      "wasserstein_iqr_mean": 0.0833,
+      "per_column": {
+        "MedInc": {
+          "ks": 0.0213,
+          "wasserstein_iqr": 0.0212
+        },
+        "HouseAge": {
+          "ks": 0.0197,
+          "wasserstein_iqr": 0.0177
+        },
+        "AveRooms": {
+          "ks": 0.0165,
+          "wasserstein_iqr": 0.0434
+        },
+        "AveBedrms": {
+          "ks": 0.0339,
+          "wasserstein_iqr": 0.1172
+        },
+        "Population": {
+          "ks": 0.02,
+          "wasserstein_iqr": 0.0568
+        },
+        "AveOccup": {
+          "ks": 0.0197,
+          "wasserstein_iqr": 0.4362
+        },
+        "Latitude": {
+          "ks": 0.0233,
+          "wasserstein_iqr": 0.0158
+        },
+        "Longitude": {
+          "ks": 0.032,
+          "wasserstein_iqr": 0.0119
+        },
+        "MedHouseVal": {
+          "ks": 0.0229,
+          "wasserstein_iqr": 0.0293
+        }
+      },
+      "correlation_gap": 0.0335,
+      "c2st_auc": 0.5806,
+      "dcr_synthetic": 0.756,
+      "dcr_holdout": 0.7464,
+      "dcr_ratio": 1.0129,
+      "tstr_r2": 0.7983
+    },
+    "independent_marginals": {
+      "ks_mean": 0.0238,
+      "wasserstein_iqr_mean": 0.064,
+      "per_column": {
+        "MedInc": {
+          "ks": 0.0165,
+          "wasserstein_iqr": 0.0224
+        },
+        "HouseAge": {
+          "ks": 0.0149,
+          "wasserstein_iqr": 0.0141
+        },
+        "AveRooms": {
+          "ks": 0.0297,
+          "wasserstein_iqr": 0.0559
+        },
+        "AveBedrms": {
+          "ks": 0.0281,
+          "wasserstein_iqr": 0.1197
+        },
+        "Population": {
+          "ks": 0.0249,
+          "wasserstein_iqr": 0.0542
+        },
+        "AveOccup": {
+          "ks": 0.0165,
+          "wasserstein_iqr": 0.22
+        },
+        "Latitude": {
+          "ks": 0.031,
+          "wasserstein_iqr": 0.0266
+        },
+        "Longitude": {
+          "ks": 0.0187,
+          "wasserstein_iqr": 0.0145
+        },
+        "MedHouseVal": {
+          "ks": 0.0342,
+          "wasserstein_iqr": 0.049
+        }
+      },
+      "correlation_gap": 0.1569,
+      "c2st_auc": 0.9723,
+      "dcr_synthetic": 1.3966,
+      "dcr_holdout": 0.7464,
+      "dcr_ratio": 1.871,
+      "tstr_r2": -0.1295
+    },
+    "gaussian_copula": {
+      "ks_mean": 0.045,
+      "wasserstein_iqr_mean": 0.1375,
+      "per_column": {
+        "MedInc": {
+          "ks": 0.0233,
+          "wasserstein_iqr": 0.027
+        },
+        "HouseAge": {
+          "ks": 0.1531,
+          "wasserstein_iqr": 0.2138
+        },
+        "AveRooms": {
+          "ks": 0.0281,
+          "wasserstein_iqr": 0.0516
+        },
+        "AveBedrms": {
+          "ks": 0.0197,
+          "wasserstein_iqr": 0.1109
+        },
+        "Population": {
+          "ks": 0.0203,
+          "wasserstein_iqr": 0.0509
+        },
+        "AveOccup": {
+          "ks": 0.0223,
+          "wasserstein_iqr": 0.5424
+        },
+        "Latitude": {
+          "ks": 0.0126,
+          "wasserstein_iqr": 0.009
+        },
+        "Longitude": {
+          "ks": 0.0194,
+          "wasserstein_iqr": 0.0089
+        },
+        "MedHouseVal": {
+          "ks": 0.1063,
+          "wasserstein_iqr": 0.2232
+        }
+      },
+      "correlation_gap": 0.0748,
+      "c2st_auc": 0.9076,
+      "dcr_synthetic": 1.1636,
+      "dcr_holdout": 0.7464,
+      "dcr_ratio": 1.5589,
+      "tstr_r2": 0.5605
+    },
+    "real_holdout": {
+      "tstr_r2": 0.8236,
+      "dcr_synthetic": 0.7467,
+      "dcr_holdout": 0.7464,
+      "dcr_ratio": 1.0003
+    }
+  },
+  "trtr_r2": 0.854
+}

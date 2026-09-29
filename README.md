@@ -40,6 +40,45 @@ uv run datadiffusion baselines --dataset california             # baselines alon
 `metrics.jsonl` (per-epoch losses and learning rate) and `model.pt` (config + weights; loads with
 `torch.load(weights_only=True)`).
 
+## Results (v3.0.0)
+
+Seed 0, CPU (2014 MacBook Pro); reproduce with `scripts/final_runs.sh`. Configs and full reports: [`results/`](results/). Samplers: DDPM
+(1000 ancestral steps, the default) and DDIM (100 steps, η = 0).
+
+**California Housing** — 8 features + target, 14,448 training rows; best epoch 294 of 300.
+
+| Metric | Diffusion (DDPM) | Diffusion (DDIM) | Independent marginals | Gaussian copula | Real holdout |
+|---|---|---|---|---|---|
+| KS, mean over columns (↓) | 0.023 | 0.027 | 0.024 | 0.045 | — |
+| Wasserstein / IQR, mean (↓) | 0.083 | 0.524 | 0.064 | 0.138 | — |
+| Correlation gap (↓) | **0.034** | 0.047 | 0.157 | 0.075 | — |
+| C2ST AUC (0.5 = indistinguishable) | **0.581** | 0.604 | 0.972 | 0.908 | — |
+| TSTR R² (↑; TRTR = 0.854) | **0.798** | 0.783 | −0.130 | 0.560 | 0.824 |
+| DCR ratio (≈ 1 healthy, ≪ 1 copying) | 1.013 | 1.020 | 1.871 | 1.559 | 1.000 |
+
+A gradient-boosting model trained only on diffusion samples reaches R² 0.80 on real test rows —
+93% of training on the real data (0.854) and far above the copula (0.56) — while a classifier can
+barely tell diffusion rows from real ones (AUC 0.58 vs 0.91 for the copula), and the samples sit no
+closer to training rows than real unseen rows do (DCR ≈ 1). Independent marginals win the per-column
+Wasserstein score, as they must (they resample each training column exactly), and lose everything
+that involves more than one column. DDIM's larger mean Wasserstein is almost all one column —
+`AveOccup`, whose tail runs to over 1,000 occupants per household: 4.21 IQRs off under DDIM vs 0.44
+under DDPM, with every other column within about 2x. That tail sensitivity is why DDPM is the default.
+
+![California marginals](docs/images/california_marginals.png)
+![California correlations](docs/images/california_correlations.png)
+
+**Two moons** — 3,500 training points; best epoch 141 (early stop at 181).
+
+![moons: real vs diffusion vs baselines](docs/images/moons_scatter.png)
+
+| Metric | Diffusion (DDPM) | Diffusion (DDIM) | Independent marginals | Gaussian copula |
+|---|---|---|---|---|
+| KS (↓) | 0.047 | 0.086 | 0.046 | 0.038 |
+| Correlation gap (↓) | **0.022** | 0.019 | 0.525 | 0.133 |
+| C2ST AUC (0.5 best) | **0.545** | 0.628 | 0.862 | 0.829 |
+| DCR ratio | 0.974 | 1.058 | 7.129 | 6.090 |
+
 ## How it is evaluated
 
 The data is split once (seeded) into **train 70% / holdout 15% / test 15%**. The model and the

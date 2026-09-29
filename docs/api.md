@@ -14,7 +14,7 @@ cfg = ExperimentConfig.from_toml("configs/moons.toml")
 data = load_dataset("moons", n_samples=cfg.data.n_samples, seed=cfg.data.seed)
 
 run = new_run_dir("runs", cfg.name)
-train(cfg, data, run)                     # writes run/model.pt and run/metrics.jsonl
+train(cfg, data, run)  # writes run/model.pt and run/metrics.jsonl
 
 cfg, model, schedule = load_run(run)
 pre = Preprocessor(cfg.data.seed).fit(data.train)

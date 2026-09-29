@@ -8,6 +8,7 @@ numpy < 2 (Intel-mac wheels), CPU torch on linux via the pytorch-cpu index.
 
 - `make install` · `make test` (`make test-ci` skips `slow`) · `make lint`
 - `make train-moons` / `make train-california` · `make evaluate RUN=runs/<name>/<ts>` · `make baselines`
+- `scripts/final_runs.sh` reproduces the README results; copy `runs/*/report.json` into `results/`
 
 ## Module map
 

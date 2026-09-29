@@ -2,7 +2,8 @@
 
 ## [3.0.0] — unreleased
 
-A rewrite focused on correctness and honest evaluation.
+A rewrite focused on correctness and honest evaluation. Results on California Housing: TSTR R² 0.798
+(TRTR 0.854, Gaussian copula 0.560), C2ST AUC 0.581, DCR ratio 1.01 — see README.
 
 ### Breaking changes
 - New package layout and CLI: `datadiffusion train | sample | evaluate | baselines` over local run
