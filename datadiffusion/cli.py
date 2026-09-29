@@ -158,7 +158,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(func=_cmd_train)
 
     def add_sampling(p):
-        p.add_argument("--method", choices=["ddim", "ddpm"], default="ddim")
+        p.add_argument(
+            "--method", choices=["ddim", "ddpm"], default="ddpm", help="ddpm is more faithful; ddim faster"
+        )
         p.add_argument("--steps", type=int, default=50, help="DDIM steps")
         p.add_argument("--eta", type=float, default=0.0, help="DDIM stochasticity (0 deterministic, 1 ~DDPM)")
         p.add_argument("--clip", type=float, default=5.0, help="clip predicted x0 to [-clip, clip] (0 = off)")

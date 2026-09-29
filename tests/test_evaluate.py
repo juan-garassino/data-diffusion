@@ -58,5 +58,7 @@ def test_report_and_markdown():
     rep = ev.report({"diffusion": rows[:250] + 0.01}, data)
     assert set(rep["methods"]) == {"diffusion", "independent_marginals", "gaussian_copula", "real_holdout"}
     assert "tstr_r2" in rep["methods"]["gaussian_copula"] and "trtr_r2" in rep
+    assert set(rep["methods"]["real_holdout"]) == {"tstr_r2", "dcr_synthetic", "dcr_holdout", "dcr_ratio"}
+    assert "| — |" in ev.to_markdown(rep) or "— |" in ev.to_markdown(rep)
     md = ev.to_markdown(rep)
     assert md.startswith("| Metric | diffusion |") and "C2ST AUC" in md

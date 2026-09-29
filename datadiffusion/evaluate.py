@@ -171,7 +171,12 @@ def report(generated: dict[str, np.ndarray], data, seed: int = 0) -> dict:
     }
     if data.target is not None:
         out["trtr_r2"] = tstr(data.train, data.test, seed)
-        out["methods"]["real_holdout"] = evaluate(data.holdout, data, seed)
+        # the holdout scored against itself makes fidelity and C2ST meaningless; it is only the
+        # reference point for utility (TSTR ceiling) and privacy (DCR ratio 1 by definition)
+        out["methods"]["real_holdout"] = {
+            "tstr_r2": tstr(data.holdout, data.test, seed),
+            **dcr(data.train, data.holdout, data.holdout, seed),
+        }
     return out
 
 
