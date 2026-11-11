@@ -106,11 +106,26 @@ where it beats the copula.
   leave each column's training range.
 - DCR is a heuristic privacy check, not a differential-privacy guarantee.
 
+Future work, not scheduled:
+
+- **Categorical columns** via multinomial diffusion next to the Gaussian one, as in TabDDPM.
+- **Feature-tokenizer transformer backbone**: one token per column, so attention runs across features.
+  (The pre-v3 transformer attended over a sequence of length 1, i.e. it was a linear layer.)
+- **Per-column inverse transforms back to a DataFrame**: `Preprocessor.inverse_transform` returns a
+  float array in original units; restoring dtypes (integer rounding, decoded categories) and column
+  names is left to the caller.
+- **Denoising noisy tables** as a second use case: noise real rows to a moderate t and run the
+  reverse process from there instead of from pure noise.
+
 ## Project history
 
 v1 and v2 (tags `v1.0`, `v2.0`) reported a composite score of ~0.92 that turned out to be inflated
 (a mis-normalized correlation term) and a "TSTR" that labelled synthetic rows with a model trained on
 real data. v3 replaces both with the protocol above; see [CHANGELOG.md](CHANGELOG.md).
+The NaNs and `[32, 1, 32, 8]`-shaped outputs that plagued the old score-based model came from one
+line: noise coefficients indexed with image-style `.view(-1, 1, 1, 1)` on 2-D `[batch, features]`
+data, which broadcasts instead of scaling per row. v3 shapes every coefficient from the data's
+rank (`datadiffusion/schedule.py`).
 
 ## Docs
 
